@@ -36,8 +36,8 @@ jobs:
     needs: build-and-push
 
     steps:
-      - name: Decode SSH Key
-        run: echo "${{ secrets.EC2_KEY }}" | base64 --decode > ./ec2-key.pem
+      - name: Save SSH Key
+        run: echo "${{ secrets.EC2_KEY }}" > ./ec2-key.pem
 
       - name: Set Key Permissions
         run: chmod 600 ./ec2-key.pem
