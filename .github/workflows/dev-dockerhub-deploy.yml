@@ -36,18 +36,12 @@ jobs:
     needs: build-and-push
 
     steps:
-      - name: Save SSH Key
-        run: printf "%s" "${{ secrets.EC2_KEY }}" > ./ec2-key.pem
-
-      - name: Set Key Permissions
-        run: chmod 600 ./ec2-key.pem
-
       - name: Deploy Docker Image on EC2
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          key: ./ec2-key.pem
+          key-content: ${{ secrets.EC2_KEY }}
           script: |
             docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
             docker stop ${{ secrets.DOCKER_IMAGE_NAME }} || true
