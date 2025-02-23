@@ -47,9 +47,6 @@ jobs:
 
             set -e  # 스크립트 실패 시 중단
   
-            echo "Docker Hub에 로그인 중..."
-            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-
             # 기존 컨테이너 확인 및 중지
             echo "'${{ secrets.DOCKER_IMAGE_NAME }}' 컨테이너가 존재하는지 확인 중입니다..."
             if sudo docker ps -a --filter "name=${{ secrets.DOCKER_IMAGE_NAME }}" --format '{{.Names}}' | grep -w ${{ secrets.DOCKER_IMAGE_NAME }}; then
@@ -59,6 +56,9 @@ jobs:
             else
               echo "'${{ secrets.DOCKER_IMAGE_NAME }}' 컨테이너가 존재하지 않습니다. 중지 및 제거 단계를 건너뜁니다."
             fi
+
+            echo "Docker Hub에 로그인 중..."
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
             # Docker Hub에서 최신 이미지 Pull
             echo "Docker Hub에서 최신 이미지를 가져오는 중입니다..."
