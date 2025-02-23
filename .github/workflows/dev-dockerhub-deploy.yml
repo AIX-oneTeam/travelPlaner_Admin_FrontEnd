@@ -48,39 +48,29 @@ jobs:
             set -e  # 스크립트 실패 시 중단
   
             echo "Docker Hub에 로그인 중..."
-            docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+            echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
             # 기존 컨테이너 확인 및 중지
             echo "'${{ secrets.DOCKER_IMAGE_NAME }}' 컨테이너가 존재하는지 확인 중입니다..."
-            if docker ps -a --filter "name=${{ secrets.DOCKER_IMAGE_NAME }}" --format '{{.Names}}' | grep -w ${{ secrets.DOCKER_IMAGE_NAME }}; then
+            if sudo docker ps -a --filter "name=${{ secrets.DOCKER_IMAGE_NAME }}" --format '{{.Names}}' | grep -w ${{ secrets.DOCKER_IMAGE_NAME }}; then
               echo "'${{ secrets.DOCKER_IMAGE_NAME }}' 컨테이너가 실행 중입니다. 중지 및 제거합니다..."
-              docker stop ${{ secrets.DOCKER_IMAGE_NAME }}
-              docker rm ${{ secrets.DOCKER_IMAGE_NAME }}
+              sudo docker stop ${{ secrets.DOCKER_IMAGE_NAME }}
+              sudo docker rm ${{ secrets.DOCKER_IMAGE_NAME }}
             else
               echo "'${{ secrets.DOCKER_IMAGE_NAME }}' 컨테이너가 존재하지 않습니다. 중지 및 제거 단계를 건너뜁니다."
             fi
 
-            # 기존 Docker 이미지 정리
-            echo "기존 Docker 이미지를 정리 중입니다..."
-            existing_images=$(docker images --filter "reference=${{ secrets.DOCKER_IMAGE_NAME }}:dev" --format "{{.ID}}")
-            if [ ! -z "$existing_images" ]; then
-              echo "기존 이미지를 삭제합니다..."
-              docker rmi -f $existing_images
-            else
-              echo "삭제할 기존 이미지가 없습니다."
-            fi
-
             # Docker Hub에서 최신 이미지 Pull
             echo "Docker Hub에서 최신 이미지를 가져오는 중입니다..."
-            docker pull ${{ secrets.DOCKER_IMAGE_NAME }}:dev
+            sudo docker pull ${{ secrets.DOCKER_IMAGE_NAME }}:dev
 
             # 새 컨테이너 실행
             echo "새 컨테이너를 시작합니다..."
-            docker run -d -p 80:80 --name ${{ secrets.DOCKER_IMAGE_NAME }} ${{ secrets.DOCKER_IMAGE_NAME }}:dev
+            sudo docker run -d -p 80:80 --name ${{ secrets.DOCKER_IMAGE_NAME }} ${{ secrets.DOCKER_IMAGE_NAME }}:dev
 
             # 사용하지 않는 Docker 이미지 정리
             echo "사용하지 않는 Docker 이미지를 정리 중입니다..."
-            docker image prune -f
+            sudo docker image prune -f
 
             # 배포 완료
             echo "배포가 성공적으로 완료되었습니다."
