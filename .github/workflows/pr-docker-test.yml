@@ -33,13 +33,15 @@ jobs:
       - name: Run Docker Container
         run: |
           docker run -d -p 80:80 --name pr-test-container pr-test-image
-          sleep 10  # 컨테이너가 완전히 실행될 때까지 대기
+          sleep 15  # 컨테이너가 완전히 실행될 때까지 대기
           docker ps -a  # 모든 컨테이너 상태 확인
           docker logs pr-test-container  # Nginx 로그 확인
 
+
+      # Docker 컨테이너 내부에서 curl 테스트
       - name: Test Docker Container
         run: |
-          curl -f http://localhost:80 || exit 1
+          docker exec pr-test-container curl -f http://localhost:80 || exit 1
 
       - name: Stop and Remove Docker Container
         if: always()
