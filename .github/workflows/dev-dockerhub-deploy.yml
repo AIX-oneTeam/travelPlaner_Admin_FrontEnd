@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Save SSH Key
-        run: echo "${{ secrets.EC2_KEY }}" > ./ec2-key.pem
+        run: printf "%s" "${{ secrets.EC2_KEY }}" > ./ec2-key.pem
 
       - name: Set Key Permissions
         run: chmod 600 ./ec2-key.pem
