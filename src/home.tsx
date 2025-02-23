@@ -8,7 +8,7 @@ const Home: React.FC = () => {
       <section className="banner">
         <h1>관리자 페이지</h1>
         <p>관리자페이지 입니다</p>
-        <p>docker 테스트</p>
+        <p>docker 테스트!!</p>
       </section>
     </main>
   );
