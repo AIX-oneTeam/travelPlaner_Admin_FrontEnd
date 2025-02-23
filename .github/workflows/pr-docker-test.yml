@@ -22,7 +22,7 @@ jobs:
 
       - name: Run Docker Container
         run: |
-          docker run -d -p 8080:80 --name pr-test-container pr-test-image
+          docker run -d -p 80:80 --name pr-test-container pr-test-image
           sleep 10  # 컨테이너가 완전히 실행될 때까지 대기
 
       - name: Test Docker Container
