@@ -27,7 +27,7 @@ jobs:
 
       - name: Test Docker Container
         run: |
-          curl -f http://localhost:8080 || exit 1
+          curl -f http://localhost:80 || exit 1
 
       - name: Stop and Remove Docker Container
         if: always()
