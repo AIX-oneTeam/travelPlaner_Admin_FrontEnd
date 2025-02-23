@@ -23,11 +23,17 @@ RUN npm run build
 # Nginx 환경으로 배포
 FROM nginx:stable-alpine
 
+# Nginx 설정에 필요한 환경변수 선언
+ARG DOMAIN
+ARG BACKEND_URL
+ENV DOMAIN=$DOMAIN
+ENV BACKEND_URL=$BACKEND_URL
+
 # 빌드 결과물만 Nginx HTML 디렉토리로 복사
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Nginx 설정 파일 복사 (React 라우팅을 위해 수정된 설정 적용)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
 
 # Nginx 서버가 80번 포트로 외부 요청을 받도록 설정
 EXPOSE 80

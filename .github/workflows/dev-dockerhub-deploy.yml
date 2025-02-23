@@ -13,11 +13,6 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v3
 
-      - name: Restore nginx.conf from GitHub Secrets
-        run: |
-          echo "${{ secrets.NGINX_CONF }}" | base64 --decode > ./nginx.conf        
-          cat ./nginx.conf  # 디버깅용 (내용 확인)
-          
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -29,7 +24,10 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_IMAGE_NAME }} .
+          docker build \
+          --build-arg DOMAIN=${{ secrets.DOMAIN }} \
+          --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} \
+          -t ${{ secrets.DOCKER_IMAGE_NAME }} .
           docker tag ${{ secrets.DOCKER_IMAGE_NAME }}:latest ${{ secrets.DOCKER_IMAGE_NAME }}:dev
           docker push ${{ secrets.DOCKER_IMAGE_NAME }}:dev
 

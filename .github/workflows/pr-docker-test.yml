@@ -16,10 +16,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Restore nginx.conf from GitHub Secrets
-        run: |
-          echo "${{ secrets.NGINX_CONF }}" | base64 --decode > ./nginx.conf        
-
       # 이름 충돌 방지
       - name: Stop and Remove Existing Container
         run: |
@@ -28,7 +24,10 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t pr-test-image .
+          docker build \
+          --build-arg DOMAIN=${{ secrets.DOMAIN }} \
+          --build-arg BACKEND_URL=${{ secrets.BACKEND_URL }} \
+          -t pr-test-image .
           docker images  # 빌드된 이미지 목록 확인
 
       - name: Run Docker Container
