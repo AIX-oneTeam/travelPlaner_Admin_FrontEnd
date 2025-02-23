@@ -16,14 +16,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Restore nginx.conf from GitHub Secrets
+        run: |
+          echo "${{ secrets.NGINX_CONF }}" | base64 --decode > ./nginx.conf        
+
+      # 이름 충돌 방지
+      - name: Stop and Remove Existing Container
+        run: |
+          docker stop pr-test-container || true
+          docker rm pr-test-container || true        
+
       - name: Build Docker Image
         run: |
           docker build -t pr-test-image .
+          docker images  # 빌드된 이미지 목록 확인
 
       - name: Run Docker Container
         run: |
           docker run -d -p 80:80 --name pr-test-container pr-test-image
           sleep 10  # 컨테이너가 완전히 실행될 때까지 대기
+          docker ps -a  # 모든 컨테이너 상태 확인
+          docker logs pr-test-container  # Nginx 로그 확인
 
       - name: Test Docker Container
         run: |
