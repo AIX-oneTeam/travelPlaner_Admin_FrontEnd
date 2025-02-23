@@ -1,0 +1,36 @@
+name: Test Docker on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        run: |
+          docker build -t pr-test-image .
+
+      - name: Run Docker Container
+        run: |
+          docker run -d -p 8080:80 --name pr-test-container pr-test-image
+          sleep 10  # 컨테이너가 완전히 실행될 때까지 대기
+
+      - name: Test Docker Container
+        run: |
+          curl -f http://localhost:8080 || exit 1
+
+      - name: Stop and Remove Docker Container
+        if: always()
+        run: |
+          docker stop pr-test-container
+          docker rm pr-test-container
