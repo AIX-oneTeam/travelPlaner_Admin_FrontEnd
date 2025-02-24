@@ -60,7 +60,7 @@ function QuestionList() {
                   <tr key={question.inquiry_id}>
                     <td>{question.inquiry_id}</td>
                     <td>
-                      <Link to={`/inquiry/${question.inquiry_id}`}>
+                      <Link to={`/question/${question.inquiry_id}`}>
                         {question.title}
                       </Link>
                     </td>

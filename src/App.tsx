@@ -15,7 +15,7 @@ function AppContent() {
       <AxiosIntercepter />
       <Layout navigate={navigate} currentPath={location.pathname}>
         <Routes>
-          <Route path="/question/:questionId" element={<Question />} />
+          <Route path="/question/:inquiry_id" element={<Question />} />
           <Route path="/question" element={<QuestionList />} />
           <Route path="/graph/member" element={<MemberGraph />} />
         </Routes>
