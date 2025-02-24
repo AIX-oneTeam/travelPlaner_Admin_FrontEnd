@@ -37,7 +37,6 @@ function QuestionList() {
     }
   };
 
-
   return (
     <div className={styles.question_list_container}>
       <div className={styles.question_list_content_container}>
@@ -48,10 +47,10 @@ function QuestionList() {
           <table className={styles.question_table}>
             <thead>
               <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성일</th>
-                <th>상태</th>
+                <th>Nu</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Ans</th>
               </tr>
             </thead>
             <tbody>
@@ -59,13 +58,13 @@ function QuestionList() {
                 questions.map((question) => (
                   <tr key={question.inquiry_id}>
                     <td>{question.inquiry_id}</td>
-                    <td>
-                      <Link to={`/question/${question.inquiry_id}`}>
+                    <td className={styles['title-cell']}>
+                      <Link to={`/question/${question.inquiry_id}`} className={styles['title-link']}>
                         {question.title}
                       </Link>
                     </td>
                     <td>{question.created_at.split("T")[0]}</td>
-                    <td>{question.answer ? "답변완료" : "미답변"}</td>
+                    <td>{question.answer ? "YES" : "NO"}</td>
                   </tr>
                 ))
               ) : (
