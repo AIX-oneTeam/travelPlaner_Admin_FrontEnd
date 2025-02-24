@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from "./QuestionList.module.css";
+import { API_BASE_URL } from "../../config";
 
 // Question 인터페이스 정의
 interface Question {
-  id: number;
+  inquiry_id: number;
   title: string;
-  date: string;
-  answered: boolean;
+  created_at: string;
+  answer: boolean;
 }
 
 function QuestionList() {
@@ -20,12 +21,22 @@ function QuestionList() {
 
   const fetchQuestions = async () => {
     try {
-      const response = await axios.get<Question[]>('/inquiries/admin/all');
-      setQuestions(response.data);
+      const response = await axios.get(`${API_BASE_URL}/inquiries/admin/all`);
+
+      console.log("백엔드에서 받은 응답:", response.data);
+
+      if (response.data && response.data.data && Array.isArray(response.data.data.inquiries)) {
+        setQuestions(response.data.data.inquiries);
+      } else {
+        console.error("응답 데이터 형식이 올바르지 않습니다:", response.data);
+        setQuestions([]); 
+      }
     } catch (error) {
-      console.error('Error fetching questions:', error);
+      console.error("Axios 요청 실패:", error);
+      setQuestions([]);
     }
   };
+
 
   return (
     <div className={styles.question_list_container}>
@@ -44,24 +55,31 @@ function QuestionList() {
               </tr>
             </thead>
             <tbody>
-              {questions.map((question) => (
-                <tr key={question.id}>
-                  <td>{question.id}</td>
-                  <td>
-                    <Link to={`/inquiry/${question.id}`}>
-                      {question.title}
-                    </Link>
+              {Array.isArray(questions) && questions.length > 0 ? (
+                questions.map((question) => (
+                  <tr key={question.inquiry_id}>
+                    <td>{question.inquiry_id}</td>
+                    <td>
+                      <Link to={`/question/${question.inquiry_id}`}>
+                        {question.title}
+                      </Link>
+                    </td>
+                    <td>{question.created_at.split("T")[0]}</td>
+                    <td>{question.answer ? "답변완료" : "미답변"}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: "center", padding: "20px" }}>
+                    문의 내역이 없습니다.
                   </td>
-                  <td>{question.date}</td>
-                  <td>{question.answered ? '답변완료' : '미답변'}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
-
-        </div>
       </div>
+    </div>
   );
 }
 
