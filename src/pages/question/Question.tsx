@@ -11,6 +11,7 @@ interface Inquiry {
   content: string;
   created_at: string;
   status: string;
+  answer?: string; // 답변 필드 추가
 }
 
 function Question() {
@@ -19,7 +20,8 @@ function Question() {
   const [inquiry, setInquiry] = useState<Inquiry | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [answer, setAnswer] = useState<string>(''); // 답변 내용을 저장할 상태 추가
+  const [answer, setAnswer] = useState<string>('');
+  const [existingAnswer, setExistingAnswer] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchInquiry = async () => {
@@ -41,6 +43,9 @@ function Question() {
 
         if (response.data.status === "성공" && response.data.data?.inquiry) {
           setInquiry(response.data.data.inquiry);
+          if (response.data.data.inquiry.answer) {
+            setExistingAnswer(response.data.data.inquiry.answer);
+          }
         } else {
           setError(response.data.message || "문의 정보를 찾을 수 없습니다.");
         }
@@ -64,15 +69,11 @@ function Question() {
   }, [inquiry_id]);
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString("ko-KR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false
-    });
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   const getStatusText = (status: string) => {
@@ -82,7 +83,6 @@ function Question() {
   const handleGoBack = () => {
     navigate(-1);
   };
-
 
   const handleCompleteAnswer = async () => {
     if (!answer.trim()) {
@@ -98,7 +98,8 @@ function Question() {
 
       if (response.data.status === "성공") {
         alert("답변이 완료되었습니다.");
-        navigate("/question");
+        setExistingAnswer(answer);
+        setAnswer('');
       } else {
         alert(response.data.message || "답변 완료 처리 중 오류가 발생했습니다.");
       }
@@ -137,28 +138,35 @@ function Question() {
           <h2 className={styles.question_container_title}>문의 내용</h2>
           <div className={styles.question_content}>{inquiry.content}</div>
         </div>
-        {/* 답변 작성 영역 추가 */}
         <div className={styles.question_answer_container}>
-          <h2 className={styles.question_container_title}>답변 작성</h2>
-          <textarea
-            className={styles.question_answer_textarea}
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            placeholder="답변을 입력해주세요."
-            rows={5}
-          />
+          <h2 className={styles.question_container_title}>답변</h2>
+          {existingAnswer ? (
+            <div className={styles.question_existing_answer}>{existingAnswer}</div>
+          ) : (
+            <>
+              <textarea
+                className={styles.question_answer_textarea}
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                placeholder="답변을 입력해주세요."
+                rows={5}
+              />
+              <div className={styles.question_final_button_container}>
+                <button
+                  type="button"
+                  className={styles.question_final_button}
+                  onClick={handleCompleteAnswer}
+                  disabled={!answer.trim()}
+                >
+                  답변완료
+                </button>
+              </div>
+            </>
+          )}
         </div>
         <div className={styles.question_final_button_container}>
           <button type="button" className={styles.question_final_button} onClick={handleGoBack}>
             돌아가기
-          </button>
-          <button
-            type="button"
-            className={styles.question_final_button}
-            onClick={handleCompleteAnswer}
-            disabled={!answer.trim()} // 답변이 비어있으면 버튼 비활성화
-          >
-            답변완료
           </button>
         </div>
       </div>

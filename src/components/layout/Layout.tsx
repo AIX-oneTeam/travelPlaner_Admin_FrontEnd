@@ -5,7 +5,6 @@ import MainContent from "../main/MainContent";
 import "./Layout.css";
 import SideBar from "../sideBar/SideBar";
 
-
 interface LayoutProps {
   children: React.ReactNode;
   navigate: (path: string) => void;
@@ -13,7 +12,6 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, navigate, currentPath }) => {
-
   const [isSideBarVisible, setIsSideBarVisible] = useState<boolean>(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +45,8 @@ const Layout: React.FC<LayoutProps> = ({ children, navigate, currentPath }) => {
 
   return (
     <div className="layout-container">
-      <div ref={sidebarRef}>
+      <div className={`overlay ${isSideBarVisible ? 'visible' : ''}`} onClick={closeSideBar}></div>
+      <div ref={sidebarRef} className="side-bar-container">
         <SideBar
           isSideBarVisible={isSideBarVisible}
           closeSideBar={closeSideBar}

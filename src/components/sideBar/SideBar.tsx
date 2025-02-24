@@ -15,13 +15,8 @@ const SideBar: React.FC<SideBarProps> = ({
   closeSideBar,
   navigateAndCloseSideBar,
 }) => {
- 
-  if (!isSideBarVisible) {
-    return null;
-  }
-
   return (
-    <aside id="sideBar-container">
+    <aside id="sideBar-container" className={isSideBarVisible ? 'visible' : ''}>
       <h2 className="none">sideBar</h2>
       <ul className="sideBar-contents">
         <li onClick={() => navigateAndCloseSideBar("/agent")}>
