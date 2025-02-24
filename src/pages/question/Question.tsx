@@ -23,6 +23,24 @@ function Question() {
   const [answer, setAnswer] = useState<string>('');
   const [existingAnswer, setExistingAnswer] = useState<string | null>(null);
 
+    const formatDateTime = (dateString: string) => {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const seconds = date.getSeconds();
+
+      // 오전/오후 처리
+      const ampm = hours >= 12 ? "오후" : "오전";
+      const formattedHours = hours % 12 || 12; // 12시간제로 변환
+
+      return `${year}-${month}-${day} ${ampm} ${formattedHours}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    };
+
   useEffect(() => {
     const fetchInquiry = async () => {
       setLoading(true);
@@ -76,10 +94,6 @@ function Question() {
     return `${year}-${month}-${day}`;
   };
 
-  const getStatusText = (status: string) => {
-    return status === 'pending' ? '미답변' : status;
-  };
-
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -131,7 +145,9 @@ function Question() {
         <div className={styles.question_header}>
           <h1 className={styles.question_title}>제목: {inquiry.title}</h1>
           <p className={styles.question_info}>
-            작성자 ID: {inquiry.member_id} | 작성일: {formatDate(inquiry.created_at)} | 상태: {getStatusText(inquiry.status)}
+            작성자 ID: {inquiry.member_id} | 작성일:{" "}
+            {formatDateTime(inquiry.created_at)} | 상태:{" "}
+            {inquiry.answer ? "답변 완료" : "미답변"}
           </p>
         </div>
         <div className={styles.question_main_content_container}>
@@ -141,7 +157,9 @@ function Question() {
         <div className={styles.question_answer_container}>
           <h2 className={styles.question_container_title}>답변</h2>
           {existingAnswer ? (
-            <div className={styles.question_existing_answer}>{existingAnswer}</div>
+            <div className={styles.question_existing_answer}>
+              {existingAnswer}
+            </div>
           ) : (
             <>
               <textarea
@@ -165,7 +183,11 @@ function Question() {
           )}
         </div>
         <div className={styles.question_final_button_container}>
-          <button type="button" className={styles.question_final_button} onClick={handleGoBack}>
+          <button
+            type="button"
+            className={styles.question_final_button}
+            onClick={handleGoBack}
+          >
             돌아가기
           </button>
         </div>
