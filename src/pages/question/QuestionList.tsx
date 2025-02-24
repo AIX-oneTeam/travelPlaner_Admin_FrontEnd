@@ -27,7 +27,6 @@ function QuestionList() {
 
       if (response.data && response.data.data && Array.isArray(response.data.data.inquiries)) {
         setQuestions(response.data.data.inquiries);
-        console.log("상태 업데이트 완료:", response.data.data.inquiries);
       } else {
         console.error("응답 데이터 형식이 올바르지 않습니다:", response.data);
         setQuestions([]); 
