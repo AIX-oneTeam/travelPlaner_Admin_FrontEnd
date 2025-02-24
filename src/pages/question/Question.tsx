@@ -19,6 +19,7 @@ function Question() {
   const [inquiry, setInquiry] = useState<Inquiry | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [answer, setAnswer] = useState<string>(''); // 답변 내용을 저장할 상태 추가
 
   useEffect(() => {
     const fetchInquiry = async () => {
@@ -82,14 +83,22 @@ function Question() {
     navigate(-1);
   };
 
+
   const handleCompleteAnswer = async () => {
+    if (!answer.trim()) {
+      alert("답변 내용을 입력해주세요.");
+      return;
+    }
+
     try {
       const numericId = parseInt(inquiry_id || '', 10);
-      const response = await axios.put(`${API_BASE_URL}/inquiries/admin/answer/${numericId}`);
+      const response = await axios.put(`${API_BASE_URL}/inquiries/admin/answer/${numericId}`, {
+        answer: answer
+      });
 
       if (response.data.status === "성공") {
         alert("답변이 완료되었습니다.");
-        navigate(-1);
+        navigate("/question");
       } else {
         alert(response.data.message || "답변 완료 처리 중 오류가 발생했습니다.");
       }
@@ -128,11 +137,27 @@ function Question() {
           <h2 className={styles.question_container_title}>문의 내용</h2>
           <div className={styles.question_content}>{inquiry.content}</div>
         </div>
+        {/* 답변 작성 영역 추가 */}
+        <div className={styles.question_answer_container}>
+          <h2 className={styles.question_container_title}>답변 작성</h2>
+          <textarea
+            className={styles.question_answer_textarea}
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            placeholder="답변을 입력해주세요."
+            rows={5}
+          />
+        </div>
         <div className={styles.question_final_button_container}>
           <button type="button" className={styles.question_final_button} onClick={handleGoBack}>
             돌아가기
           </button>
-          <button type="button" className={styles.question_final_button} onClick={handleCompleteAnswer}>
+          <button
+            type="button"
+            className={styles.question_final_button}
+            onClick={handleCompleteAnswer}
+            disabled={!answer.trim()} // 답변이 비어있으면 버튼 비활성화
+          >
             답변완료
           </button>
         </div>
