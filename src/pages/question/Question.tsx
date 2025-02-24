@@ -145,7 +145,7 @@ function Question() {
         <div className={styles.question_header}>
           <h1 className={styles.question_title}>제목: {inquiry.title}</h1>
           <p className={styles.question_info}>
-            작성자 ID: {inquiry.member_id} | 작성일:{" "}
+            글 번호: {inquiry.inquiry_id} | 작성일:{" "}
             {formatDateTime(inquiry.created_at)} | 상태:{" "}
             {inquiry.answer ? "답변 완료" : "미답변"}
           </p>
