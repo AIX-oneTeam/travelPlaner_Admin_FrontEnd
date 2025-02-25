@@ -78,7 +78,7 @@ function QuestionList() {
                     <td>{question.inquiry_id}</td>
                     <td className={styles["title-cell"]}>
                       <Link
-                        to={`/question/${question.inquiry_id}`}
+                        to={`/admin/question/${question.inquiry_id}`}
                         className={styles["title-link"]}
                       >
                         {question.title}
