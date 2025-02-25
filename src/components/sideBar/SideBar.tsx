@@ -1,5 +1,5 @@
 import React from "react";
-import "./SideBar.css";
+import styles from './SideBar.module.scss'
 import { Link } from "react-router-dom";
 import { API_BASE_URL } from "../../config";
 import axios from "axios";
@@ -16,16 +16,16 @@ const SideBar: React.FC<SideBarProps> = ({
   navigateAndCloseSideBar,
 }) => {
   return (
-    <aside id="sideBar-container" className={isSideBarVisible ? 'visible' : ''}>
-      <h2 className="none">sideBar</h2>
-      <ul className="sideBar-contents">
-        <li onClick={() => navigateAndCloseSideBar("/agent")}>
+    <aside className={`${styles.sideBarContainer} ${isSideBarVisible ? styles.visible : ''}`}>
+      <h2 hidden>sideBar</h2>
+      <ul className={styles.sideBarContents}>
+        <li onClick={() => navigateAndCloseSideBar("admin/chart/agent")}>
           에이전트 관리
         </li>
-        <li onClick={() => navigateAndCloseSideBar("/graph/member")}>
+        <li onClick={() => navigateAndCloseSideBar("admin/chart/member")}>
           멤버 관리
         </li>
-        <li onClick={() => navigateAndCloseSideBar("/question")}>
+        <li onClick={() => navigateAndCloseSideBar("admin/question")}>
           문의글 관리
         </li>
       </ul>

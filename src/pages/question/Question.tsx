@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styles from "./Question.module.css";
+import styles from "./Question.module.scss"
 import axios from "axios";
 import { API_BASE_URL } from "../../config";
 
@@ -11,7 +11,7 @@ interface Inquiry {
   content: string;
   created_at: string;
   status: string;
-  answer?: string; // 답변 필드 추가
+  answer?: string;
 }
 
 function Question() {

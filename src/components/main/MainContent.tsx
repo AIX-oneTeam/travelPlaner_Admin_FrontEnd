@@ -1,5 +1,5 @@
 import React from "react";
-import "./MainContent.css"; // 스타일링 파일
+import "./MainContent.module.scss"; // 스타일링 파일
 
 const MainContent: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
