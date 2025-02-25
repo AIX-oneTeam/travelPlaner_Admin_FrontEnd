@@ -26,9 +26,9 @@ function Agent() {
           <h2 className={styles.agent_title}>Agent</h2>
         </div>
         <div className={styles.agent_main_content_container}>
-          {uniqueAgents.map(agent => (
-            <Card key={agent} agentName={agent} title={agentTitles[agent] || agent} />
-          ))}
+        {uniqueAgents.map(agent => (
+  <Card key={agent} type="agent" agentName={agent} title={agentTitles[agent] || agent} />
+))}
         </div>
       </div>
     </div>

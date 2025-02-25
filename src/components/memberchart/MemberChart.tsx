@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useRecoilValue } from 'recoil';
-import { memberChartDataState, MemberChartData } from '../../recoil/memberAtoms';
+import { memberChartDataState } from '../../recoil/memberAtoms';
 import { useMemberChartData } from '../../hooks/useMemberChartData';
 
 ChartJS.register(
@@ -32,20 +32,20 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Member Signup Chart',
+      text: '가입 멤버 차트',
     },
   },
   scales: {
     x: {
       title: {
         display: true,
-        text: 'Signup Date',
+        text: '가입일',
       },
     },
     y: {
       title: {
         display: true,
-        text: 'Member Count',
+        text: '가입 멤버 수',
       },
       beginAtZero: true,
     },
@@ -53,13 +53,13 @@ export const options = {
 };
 
 export function MemberChart() {
-    useMemberChartData(); // This hook will fetch and set the chart data
+  useMemberChartData();
   const memberChartData = useRecoilValue(memberChartDataState);
 
   const labels = memberChartData.map(item => item.signup_date);
   const datasets = [
     {
-      label: 'Member Count',
+      label: '가입 멤버 수',
       data: memberChartData.map(item => item.member_count),
       borderColor: 'rgb(75, 192, 192)',
       backgroundColor: 'rgba(75, 192, 192, 0.5)',

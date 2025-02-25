@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { memberChartDataState } from '../../recoil/memberAtoms';
 import { useMemberChartData } from '../../hooks/useMemberChartData';
 import styles from './Member.module.scss'
+import { Card } from '../../components/chartcard/Card'
 import { MemberChart } from '../../components/memberchart/MemberChart'; // Assuming you've created this component
 
 function Member() {
@@ -16,11 +17,7 @@ function Member() {
           <h2 className={styles.member_title}>Member Signups</h2>
         </div>
         <div className={styles.member_main_content_container}>
-          {memberChartData.length > 0 ? (
-            <MemberChart />
-          ) : (
-            <p>Loading member data...</p>
-          )}
+        <Card type="member" title="Member Signups" />
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useRecoilValue } from 'recoil';
-import { chartDataState, ChartDataItem } from '../../recoil/atoms';
+import { chartDataState } from '../../recoil/atoms';
 
 ChartJS.register(
   CategoryScale,
@@ -32,11 +32,11 @@ export const options = {
   },
 };
 
-interface ChartProps {
+interface AgentChartProps {
   agentName: string;
 }
 
-export function Chart({ agentName }: ChartProps) {
+export function AgentChart({ agentName }: AgentChartProps) {
   const chartData = useRecoilValue(chartDataState);
 
   const agentData = chartData.filter(item => item.agent_name === agentName);
