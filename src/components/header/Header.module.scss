@@ -1,16 +1,16 @@
-#header-container {
+.headerContainer {
   width: 100%;
-  max-width: inherit; /* 상위 요소의 max-width를 상속 */
+  max-width: inherit;
   height: 80px;
   border-bottom: 2px solid var(--main-color-1, #76adec);
   overflow: hidden;
-  flex-shrink: 0; /* Flexbox에서 헤더 크기가 줄어들지 않도록 설정 */
+  flex-shrink: 0;
 }
 
-.header-area {
+.headerArea {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* 내부 요소를 수직 정렬 */
+  align-items: center;
   padding: 0 20px;
   height: 100%;
 }
@@ -21,37 +21,35 @@
   cursor: pointer;
 }
 
-.side-menu-btn {
+.sideMenuBtn {
   width: 30px;
   height: 30px;
   object-fit: cover;
   cursor: pointer;
 }
 
-.text-container {
+.textContainer {
   display: flex;
   gap: 10px;
   align-items: center;
 
-  .profile_img{
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid var(--main-color-1, #76adec);
-  object-fit: cover;
-  cursor: pointer;
+  .profileImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--main-color-1, #76adec);
+    object-fit: cover;
+    cursor: pointer;
   }
 }
 
-.member-nickname{
+.memberNickname {
   font-size: var(--font-size-6);
   font-weight: var(--bold);
   color: var(--black);
 
-  span{
+  span {
     font-size: var(--font-size-6);
     font-weight: var(--semibold);
   }
 }
-
-

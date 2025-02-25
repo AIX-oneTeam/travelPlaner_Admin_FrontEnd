@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import styles from "./QuestionList.module.css";
+import styles from "./QuestionList.module.scss";
 import { API_BASE_URL } from "../../config";
 
-// Question 인터페이스 정의
 interface Question {
   inquiry_id: number;
   title: string;

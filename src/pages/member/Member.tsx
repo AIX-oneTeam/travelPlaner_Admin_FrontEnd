@@ -1,24 +1,26 @@
 import React from 'react'
-import styles from './Member.module.css'
-import Graph from '../../components/graph/Graph'
+import { useRecoilValue } from 'recoil';
+import { memberChartDataState } from '../../recoil/memberAtoms';
+import { useMemberChartData } from '../../hooks/useMemberChartData';
+import styles from './Member.module.scss'
+import { MemberChart } from '../../components/memberchart/MemberChart'; // Assuming you've created this component
 
 function Member() {
-  // 예시 데이터 (실제 사용 시 이 부분을 API 호출 등으로 대체해야 합니다)
-  const memberSignupData = [
-    { x: '2025-02-01', y: 10 },
-    { x: '2025-02-08', y: 15 },
-    { x: '2025-02-15', y: 20 },
-    { x: '2025-02-22', y: 25 },
-  ];
+  useMemberChartData(); // This hook will fetch the member data when the component mounts
+  const memberChartData = useRecoilValue(memberChartDataState);
 
   return (
     <div className={styles.member_container}>
-      <div className={styles.member_title_container}>
-        <h2 className={styles.member_title}>Member</h2>
-      </div>
       <div className={styles.member_content_container}>
-        <div className={styles.member_content}>
-          <Graph data={memberSignupData} />
+        <div className={styles.member_title_container}>
+          <h2 className={styles.member_title}>Member Signups</h2>
+        </div>
+        <div className={styles.member_main_content_container}>
+          {memberChartData.length > 0 ? (
+            <MemberChart />
+          ) : (
+            <p>Loading member data...</p>
+          )}
         </div>
       </div>
     </div>

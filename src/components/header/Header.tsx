@@ -1,7 +1,6 @@
 import React from "react";
-import "./Header.css";
+import styles from "./Header.module.scss";
 import { Link, useNavigate } from "react-router-dom";
-
 
 interface HeaderProps {
   toggleSideBar: () => void;
@@ -11,28 +10,26 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ toggleSideBar, closeSideBar }) => {
   const navigate = useNavigate();
 
-
   const handleMain = () => {
     navigate("/");
     closeSideBar()
   }
 
   return (
-    <div id="header-container">
-      <div className="header-area">
-        <div className="logo-container">
+    <div className={styles.headerContainer}>
+      <div className={styles.headerArea}>
+        <div className={styles.logoContainer}>
           <div onClick={handleMain}>
-            <img className="logo" src="/icons/Easy_Travel.png" alt="로고" />
+            <img className={styles.logo} src="/icons/Easy_Travel.png" alt="로고" />
           </div>
         </div>
 
-        <div className="text-container">
-
-          <p className="member-nickname">
+        <div className={styles.textContainer}>
+          <p className={styles.memberNickname}>
             <span>관리자</span>
           </p>
           <img
-            className="side-menu-btn"
+            className={styles.sideMenuBtn}
             src="/icons/hamburger_menu.png"
             alt="메뉴"
             onClick={toggleSideBar}
