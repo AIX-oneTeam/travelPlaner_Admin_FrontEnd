@@ -2,7 +2,7 @@ server {
     listen 80;
     server_name ${DOMAIN};
 
-    location /agents/admin/metrics {
+    location /agents {
         proxy_pass ${BACKEND_URL};
 
         proxy_http_version 1.1;
@@ -17,7 +17,7 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 
-    location /members/admin/all {
+    location /members {
         proxy_pass ${BACKEND_URL};
 
         proxy_http_version 1.1;
@@ -32,7 +32,7 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 
-    location /inquiries/admin/all {
+    location /inquiries {
         proxy_pass ${BACKEND_URL};
 
         proxy_http_version 1.1;
