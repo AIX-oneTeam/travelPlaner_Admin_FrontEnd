@@ -18,6 +18,25 @@ function QuestionList() {
     fetchQuestions();
   }, []);
 
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    // 오전/오후 처리
+    const ampm = hours >= 12 ? "오후" : "오전";
+    const formattedHours = hours % 12 || 12; // 12시간제로 변환
+
+    return `${year}/${month}/${day
+      .toString()
+      }`;
+  };
+
+
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/inquiries/admin/all`);
@@ -40,13 +59,13 @@ function QuestionList() {
     <div className={styles.question_list_container}>
       <div className={styles.question_list_content_container}>
         <div className={styles.question_list_title_container}>
-          <h1 className={styles.question_list_title}>Inquiry</h1>
+          <h1 className={styles.question_list_title}>문의 내역</h1>
         </div>
         <div className={styles.question_list_main_content_container}>
           <table className={styles.question_table}>
             <thead>
               <tr>
-                <th>Nu</th>
+                <th>No</th>
                 <th>Title</th>
                 <th>Date</th>
                 <th>Ans</th>
@@ -57,18 +76,24 @@ function QuestionList() {
                 questions.map((question) => (
                   <tr key={question.inquiry_id}>
                     <td>{question.inquiry_id}</td>
-                    <td className={styles['title-cell']}>
-                      <Link to={`/admin/question/${question.inquiry_id}`} className={styles['title-link']}>
+                    <td className={styles["title-cell"]}>
+                      <Link
+                        to={`/admin/question/${question.inquiry_id}`}
+                        className={styles["title-link"]}
+                      >
                         {question.title}
                       </Link>
                     </td>
-                    <td>{question.created_at.split("T")[0]}</td>
-                    <td>{question.answer ? "YES" : "NO"}</td>
+                    <td>{formatDateTime(question.created_at)}</td>
+                    <td>{question.answer ? "완료" : "미답변"}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} style={{ textAlign: "center", padding: "20px" }}>
+                  <td
+                    colSpan={4}
+                    style={{ textAlign: "center", padding: "20px" }}
+                  >
                     문의 내역이 없습니다.
                   </td>
                 </tr>

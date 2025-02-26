@@ -14,7 +14,7 @@ function Member() {
     <div className={styles.member_container}>
       <div className={styles.member_content_container}>
         <div className={styles.member_title_container}>
-          <h2 className={styles.member_title}>Member Signups</h2>
+          <h2 className={styles.member_title}>New Member Singup Count</h2>
         </div>
         <div className={styles.member_main_content_container}>
         <Card type="member" title="Member Signups" />

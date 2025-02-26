@@ -7,14 +7,19 @@ interface CardProps {
   type: 'member' | 'agent';
   agentName?: string;
   title: string;
+  className?: string;  // className을 선택적 prop으로 추가
 }
+
 
 export const Card: React.FC<CardProps> = ({ type, agentName, title }) => {
   return (
     <div className={styles.chartcard_container}>
       <div className={styles.chart_container}>
         <div className={styles.chart_content}>
-          {type === 'member' ? <MemberChart /> : <AgentChart agentName={agentName!} />}
+        {type === 'member' 
+  ? <MemberChart /> 
+  : (agentName ? <AgentChart agentName={agentName} /> : null)
+}
         </div>
       </div>
       <div className={styles.chartcard_title_container}>

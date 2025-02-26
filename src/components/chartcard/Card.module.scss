@@ -5,7 +5,7 @@
     padding: 15px 20px;
     transition: all 0.3s ease;
 
-    width: 320px;
+    width: autopx;
     height: auto;
 
     margin-bottom: 30px;
@@ -26,6 +26,10 @@
         background-color: blanchedalmond;
         border-radius: 8px;
         padding: 20px 0px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
     }
