@@ -36,7 +36,7 @@ function Question() {
     const ampm = hours >= 12 ? "오후" : "오전";
     const formattedHours = hours % 12 || 12; // 12시간제로 변환
 
-    return `${year}-${month}-${day} ${ampm} ${formattedHours}:${minutes
+    return `${year}-${month}-${day
       .toString()
       .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
